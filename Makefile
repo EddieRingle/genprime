@@ -1,9 +1,9 @@
 ARGS=25000 100000
 
-all: genprime-java genprime-c genprime-f90 genprime-pyx genprime-py27 genprime-py30 genprime-objc genprime-cpp genprime-cs genprime-c-llvm genprime-c-icc genprime-c-clang
+all: genprime-java genprime-c genprime-f90 genprime-pyx genprime-py27 genprime-py30 genprime-objc genprime-cpp genprime-cs genprime-c-llvm genprime-c-icc genprime-c-clang genprime-go
 
 clean:
-	rm -f genprime.*.py *.pyc *.class genprime-* *.s *.bc *.ll *.rbc
+	rm -f genprime.*.py *.pyc *.class genprime-* *.s *.bc *.ll *.rbc *.6
 
 version:
 	@echo
@@ -44,7 +44,6 @@ version:
 	-ruby --version
 	@echo
 	-rbx -v
-	@echo
 
 run: all
 	@echo "genprime (C GCC)"
@@ -109,6 +108,9 @@ run: all
 	@echo
 	@echo "genprime (Ruby Rubinius)"
 	@-rbx genprime.rb $(ARGS)
+	@echo
+	@echo "genprime (Go)"
+	@-./genprime-go $(ARGS)
 
 genprime-java: genprime.class
 
@@ -174,4 +176,9 @@ genprime.27.pyc: genprime.py
 genprime.30.pyc: genprime.py
 	-ln -sf genprime.py genprime.30.py
 	-python3.0 -c "import py_compile; py_compile.compile(\"genprime.30.py\");"
+	@echo
+
+genprime-go: genprime.go
+	-6g genprime.go
+	-6l -o genprime-go genprime.6
 	@echo
